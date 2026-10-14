@@ -1,0 +1,110 @@
+{
+ "description": "verify(public_key, bytes(message_hex), sig) must equal \"valid\"; see SEMANTICS.md, Signatures",
+ "cases": [
+  {
+   "name": "rfc8032 test 1",
+   "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+   "message_hex": "",
+   "sig": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b",
+   "valid": true
+  },
+  {
+   "name": "rfc8032 test 2",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "72",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00",
+   "valid": true
+  },
+  {
+   "name": "rfc8032 test 3",
+   "public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+   "message_hex": "af82",
+   "sig": "6291d657deec24024827e69c3abe01a30ce548a284743a445e3680d7db5ac3ac18ff9b538d16f290ae67f760984dc6594a7c15e9716ed28dc027beceea1ec40a",
+   "valid": true
+  },
+  {
+   "name": "R changed",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "72",
+   "sig": "92a009a8f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00",
+   "valid": false
+  },
+  {
+   "name": "S changed",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "72",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e448f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00",
+   "valid": false
+  },
+  {
+   "name": "S + L (non-canonical scalar)",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "72",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69daf52db7415978abc61b2c2eb6aeebfca0387b2eaeb4302aeeb00d291612bb0c10",
+   "valid": false
+  },
+  {
+   "name": "other message",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "73",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00",
+   "valid": false
+  },
+  {
+   "name": "other key",
+   "public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+   "message_hex": "72",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00",
+   "valid": false
+  },
+  {
+   "name": "upper-case hex signature",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "72",
+   "sig": "92A009A9F0D4CAB8720E820B5F642540A2B27B5416503F8FB3762223EBDB69DA085AC1E43E15996E458F3613D0F11D8C387B2EAEB4302AEEB00D291612BB0C00",
+   "valid": false
+  },
+  {
+   "name": "upper-case hex key",
+   "public_key": "3D4017C3E843895A92B70AA74D1B7EBC9C982CCF2EC4968CC0CD55F12AF4660C",
+   "message_hex": "72",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00",
+   "valid": false
+  },
+  {
+   "name": "signature too short",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "72",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c",
+   "valid": false
+  },
+  {
+   "name": "signature too long",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "72",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c0000",
+   "valid": false
+  },
+  {
+   "name": "key too short",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af466",
+   "message_hex": "72",
+   "sig": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00",
+   "valid": false
+  },
+  {
+   "name": "not hex",
+   "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+   "message_hex": "72",
+   "sig": "zza009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00",
+   "valid": false
+  },
+  {
+   "name": "a vote message",
+   "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162",
+   "message_hex": "736d6172747377697463682d766f74652d76313a30303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030",
+   "sig": "ccf3e9c4a7f7eed95f0af8c6eb7519fef45227bad1b3ce73e7a429e4f0b38131830ddb88ffb99bba45e6bb9aac1e744bdf1197e76c0f3649d3865ea759266e09",
+   "valid": true
+  }
+ ]
+}

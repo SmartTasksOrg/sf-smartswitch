@@ -1,0 +1,12 @@
+{
+  "name": "sf-smartswitch",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SmartSwitch agent side for Node.js: verifies the fleet log, certificates and heartbeats and decides whether an agent may run. Not published on npm; use it from a clone.",
+  "license": "Apache-2.0",
+  "main": "src/index.js",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node test/conformance.js"
+  }
+}

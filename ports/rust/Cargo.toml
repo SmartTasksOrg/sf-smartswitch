@@ -1,0 +1,21 @@
+[package]
+name = "sf-smartswitch"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "SmartSwitch agent side for Rust: log and certificate verification, agent rules and a plain-HTTP agent. Not published on crates.io."
+publish = false
+
+[lib]
+name = "smartswitch"
+path = "src/lib.rs"
+
+[[bin]]
+name = "conformance"
+path = "src/bin/conformance.rs"
+
+[[bin]]
+name = "interop"
+path = "src/bin/interop.rs"
+
+[dependencies]
