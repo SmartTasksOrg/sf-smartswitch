@@ -1,0 +1,40 @@
+# Alert rules for the council's targets. Tune the thresholds to your fleet.
+groups:
+  - name: smartswitch
+    rules:
+      - alert: SmartSwitchDown
+        # agents stop by themselves after the fleet's offline timeout (30 s by default) without heartbeats
+        expr: up{job="smartswitch"} == 0
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: "The SmartSwitch coordinator is not answering; agents stop after the offline timeout."}
+      - alert: SmartSwitchFleetHalted
+        expr: smartswitch_halted == 1
+        labels: {severity: critical}
+        annotations: {summary: "A quorum halted the whole fleet."}
+      - alert: SmartSwitchAgentsHalted
+        expr: smartswitch_agents_halted > 0
+        labels: {severity: warning}
+        annotations: {summary: "{{ $value }} agent(s) halted by a quorum."}
+      - alert: SmartSwitchAggregationSlow
+        # the watchdog: quorum-completing vote to certificate in the log above 200 ms (+ jitter tolerance)
+        expr: sum(increase(smartswitch_watchdog_alerts_total[5m])) > 0
+        labels: {severity: warning}
+        annotations: {summary: "Vote aggregation took longer than the 200 ms target; check the coordinator's disk and load."}
+      - alert: SmartSwitchReplication
+        expr: sum(increase(smartswitch_replication_alerts_total[5m])) > 0
+        labels: {severity: critical}
+        annotations: {summary: "An unknown agent or an extra instance asked for heartbeats (possible self-replication)."}
+      - alert: SmartSwitchMirrorMismatch
+        expr: smartswitch_log_mirror_ok == 0
+        labels: {severity: critical}
+        annotations: {summary: "The switch log and its mirror differ."}
+      - alert: SmartSwitchCertificateRejected
+        # a few rejections are normal (a stale proposal); many suggest probing or a misconfigured client
+        expr: sum(increase(smartswitch_rejected_total[10m])) > 20
+        labels: {severity: warning}
+        annotations: {summary: "More than 20 votes or certificates refused in 10 minutes."}
+      - alert: SmartSwitchHaltPropagationSlow
+        expr: histogram_quantile(0.95, sum(rate(smartswitch_propagation_ms_bucket[1h])) by (le)) > 5000
+        labels: {severity: warning}
+        annotations: {summary: "Halts took more than 5 s to reach every live agent instance (95th percentile)."}

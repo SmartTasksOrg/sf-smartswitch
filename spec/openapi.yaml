@@ -1,0 +1,284 @@
+openapi: 3.0.3
+info:
+  title: SmartSwitch coordinator
+  version: 0.1.0
+  description: |
+    The coordinator of a SmartSwitch fleet. Documents (fleet, proposal, certificate, log entry,
+    heartbeat) are defined in spec/SEMANTICS.md; the schemas below give their shape. A token only opens
+    the door: halts, resumes, suspensions and reinstatements need a quorum of keyholder signatures,
+    which the coordinator and every agent verify.
+  license: {name: Apache-2.0}
+servers:
+  - url: http://127.0.0.1:8720
+security:
+  - agentToken: []
+  - operatorToken: []
+paths:
+  /healthz:
+    get:
+      summary: Liveness
+      security: []
+      responses:
+        '200': {description: OK, content: {application/json: {schema: {type: object, properties: {ok: {type: boolean}, version: {type: string}}}}}}
+  /metrics:
+    get:
+      summary: Prometheus metrics (text exposition format)
+      security: []
+      responses:
+        '200': {description: Metrics, content: {text/plain: {schema: {type: string}}}}
+  /v1/fleet:
+    get:
+      summary: The fleet document
+      responses:
+        '200': {description: The fleet document, content: {application/json: {schema: {$ref: '#/components/schemas/Fleet'}}}}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /v1/state:
+    get:
+      summary: Current state, log size and head (for people; agents verify the log instead)
+      responses:
+        '200':
+          description: State
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fleet_id: {type: string}
+                  fleet_hash: {type: string}
+                  log_size: {type: integer}
+                  head: {type: string}
+                  pending: {type: integer}
+                  state: {$ref: '#/components/schemas/StateSummary'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /v1/log:
+    get:
+      summary: Log entries
+      parameters:
+        - {name: from, in: query, schema: {type: integer, minimum: 0, default: 0}}
+        - {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 1000, default: 1000}}
+        - {name: agent_id, in: query, schema: {type: string}, description: 'with instance_id: records how far this instance has read (halt propagation time)'}
+        - {name: instance_id, in: query, schema: {type: string}}
+      responses:
+        '200':
+          description: A page of entries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  from: {type: integer}
+                  log_size: {type: integer}
+                  entries: {type: array, items: {$ref: '#/components/schemas/LogEntry'}}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /v1/heartbeat:
+    get:
+      summary: A heartbeat signed by the coordinator key over the agent's nonce
+      parameters:
+        - {name: agent_id, in: query, required: true, schema: {type: string, pattern: '^[A-Za-z0-9._-]{1,64}$'}}
+        - {name: instance_id, in: query, required: true, schema: {type: string, pattern: '^[A-Za-z0-9._-]{1,64}$'}}
+        - {name: nonce, in: query, required: true, schema: {type: string, pattern: '^[0-9a-f]{32}$'}}
+      responses:
+        '200': {description: Heartbeat, content: {application/json: {schema: {$ref: '#/components/schemas/Heartbeat'}}}}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {description: The roster does not list this agent, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '409': {description: The agent already has max_instances live instances, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /v1/proposals:
+    get:
+      summary: Pending proposals (operator)
+      security: [{operatorToken: []}]
+      parameters:
+        - {name: hash, in: query, schema: {type: string}, description: one pending proposal by its hash}
+      responses:
+        '200': {description: 'Pending proposals, or one with ?hash=', content: {application/json: {schema: {type: object}}}}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {description: No pending proposal with this hash}
+        '429': {$ref: '#/components/responses/RateLimited'}
+  /v1/votes:
+    post:
+      summary: One keyholder's signed vote on a proposal (operator)
+      security: [{operatorToken: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [proposal, vote]
+              properties:
+                proposal: {$ref: '#/components/schemas/Proposal'}
+                vote: {$ref: '#/components/schemas/Vote'}
+      responses:
+        '200':
+          description: Pending (fewer votes than the quorum) or applied (written to the log)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: {type: string, enum: [pending, applied]}
+                  proposal_hash: {type: string}
+                  votes: {type: array, items: {type: string}}
+                  threshold: {type: integer}
+                  entry: {type: integer}
+                  seq: {type: integer}
+        '400': {$ref: '#/components/responses/SwitchError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Stale'}
+        '411': {description: Content-Length missing (chunked bodies are refused)}
+        '413': {description: Body above 256 KiB}
+        '429': {$ref: '#/components/responses/RateLimited'}
+  /v1/certificates:
+    post:
+      summary: A complete certificate, assembled offline (operator)
+      security: [{operatorToken: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [certificate]
+              properties:
+                certificate: {$ref: '#/components/schemas/Certificate'}
+      responses:
+        '200': {description: Applied, content: {application/json: {schema: {type: object, properties: {status: {type: string}, entry: {type: integer}, seq: {type: integer}, proposal_hash: {type: string}}}}}}
+        '400': {$ref: '#/components/responses/SwitchError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Stale'}
+        '429': {$ref: '#/components/responses/RateLimited'}
+  /v1/instances:
+    get:
+      summary: Agent instances seen (operator)
+      security: [{operatorToken: []}]
+      responses:
+        '200': {description: Instances, content: {application/json: {schema: {type: object}}}}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /ui:
+    get:
+      summary: Read-only status page (operator token as the HTTP Basic password)
+      security: [{operatorBasic: []}]
+      responses:
+        '200': {description: HTML, content: {text/html: {schema: {type: string}}}}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+components:
+  securitySchemes:
+    agentToken: {type: http, scheme: bearer, description: SMARTSWITCH_AGENT_TOKEN}
+    operatorToken: {type: http, scheme: bearer, description: SMARTSWITCH_OPERATOR_TOKEN (also allowed wherever the agent token is)}
+    operatorBasic: {type: http, scheme: basic, description: 'any user name, SMARTSWITCH_OPERATOR_TOKEN as the password'}
+  responses:
+    Unauthorized: {description: Missing or wrong token, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+    Forbidden: {description: Source address outside SMARTSWITCH_OPERATOR_ALLOW, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+    RateLimited: {description: Too many requests from this address, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+    BadRequest: {description: Malformed request, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+    SwitchError: {description: A protocol rule was broken (code is an SW-* code), content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+    Stale: {description: 'SW-STALE-SEQ, SW-SEQ-GAP, SW-WRONG-EPOCH or SW-EXPIRED: make a new proposal from the current state', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  schemas:
+    Error:
+      type: object
+      properties:
+        error: {type: string}
+        code: {type: string, description: 'SW-* code, when a protocol rule was broken'}
+    Key: {type: string, pattern: '^[0-9a-f]{64}$'}
+    Id: {type: string, pattern: '^[A-Za-z0-9._-]{1,64}$'}
+    Fleet:
+      type: object
+      additionalProperties: false
+      required: [type, version, fleet_id, keyholders, threshold, coordinator_key, offline_timeout_ms, proposal_max_ttl_ms, agents]
+      properties:
+        type: {type: string, enum: [smartswitch.fleet]}
+        version: {type: integer, enum: [1]}
+        fleet_id: {$ref: '#/components/schemas/Id'}
+        keyholders:
+          type: array
+          minItems: 3
+          maxItems: 64
+          items:
+            type: object
+            additionalProperties: false
+            required: [id, public_key]
+            properties: {id: {$ref: '#/components/schemas/Id'}, public_key: {$ref: '#/components/schemas/Key'}}
+        threshold: {type: integer, minimum: 2, nullable: true}
+        coordinator_key: {$ref: '#/components/schemas/Key'}
+        offline_timeout_ms: {type: integer, minimum: 1000, maximum: 3600000}
+        proposal_max_ttl_ms: {type: integer, minimum: 1000, maximum: 86400000}
+        agents:
+          type: array
+          nullable: true
+          maxItems: 100000
+          items:
+            type: object
+            additionalProperties: false
+            required: [id, max_instances]
+            properties: {id: {$ref: '#/components/schemas/Id'}, max_instances: {type: integer, minimum: 1, maximum: 1000}}
+    Proposal:
+      type: object
+      additionalProperties: false
+      required: [type, fleet_id, fleet_hash, seq, epoch, action, target, new_public_key, reason, created_ms, expires_ms]
+      properties:
+        type: {type: string, enum: [smartswitch.proposal]}
+        fleet_id: {$ref: '#/components/schemas/Id'}
+        fleet_hash: {$ref: '#/components/schemas/Key'}
+        seq: {type: integer, minimum: 1}
+        epoch: {type: integer, minimum: 0}
+        action: {type: string, enum: [halt, resume, suspend, reinstate]}
+        target: {type: string, description: '"*" or an agent id (halt, resume); a keyholder id (suspend, reinstate)'}
+        new_public_key: {type: string, nullable: true, pattern: '^[0-9a-f]{64}$'}
+        reason: {type: string, description: at most 1000 bytes in UTF-8}
+        created_ms: {type: integer, minimum: 0}
+        expires_ms: {type: integer, minimum: 0}
+    Vote:
+      type: object
+      additionalProperties: false
+      required: [keyholder, sig]
+      properties:
+        keyholder: {type: string}
+        sig: {type: string, pattern: '^[0-9a-f]{128}$', description: 'Ed25519 over "smartswitch-vote-v1:" + proposal hash'}
+    Certificate:
+      type: object
+      additionalProperties: false
+      required: [type, proposal, votes]
+      properties:
+        type: {type: string, enum: [smartswitch.certificate]}
+        proposal: {$ref: '#/components/schemas/Proposal'}
+        votes: {type: array, minItems: 1, maxItems: 64, items: {$ref: '#/components/schemas/Vote'}}
+    LogEntry:
+      type: object
+      additionalProperties: false
+      required: [n, ts_ms, kind, body, prev, hash]
+      properties:
+        n: {type: integer, minimum: 0}
+        ts_ms: {type: integer, minimum: 0}
+        kind: {type: string, enum: [genesis, certificate, event]}
+        body: {type: object}
+        prev: {$ref: '#/components/schemas/Key'}
+        hash: {$ref: '#/components/schemas/Key'}
+    Heartbeat:
+      type: object
+      additionalProperties: false
+      required: [type, fleet_hash, agent_id, instance_id, nonce, log_size, head, issued_ms, sig]
+      properties:
+        type: {type: string, enum: [smartswitch.heartbeat]}
+        fleet_hash: {$ref: '#/components/schemas/Key'}
+        agent_id: {$ref: '#/components/schemas/Id'}
+        instance_id: {$ref: '#/components/schemas/Id'}
+        nonce: {type: string, pattern: '^[0-9a-f]{32}$'}
+        log_size: {type: integer, minimum: 1}
+        head: {$ref: '#/components/schemas/Key'}
+        issued_ms: {type: integer, minimum: 0}
+        sig: {type: string, pattern: '^[0-9a-f]{128}$'}
+    StateSummary:
+      type: object
+      properties:
+        seq: {type: integer}
+        epoch: {type: integer}
+        threshold: {type: integer}
+        halted_all: {type: boolean}
+        halted: {type: array, items: {type: string}}
+        active: {type: array, items: {type: string}}
+        suspended: {type: array, items: {type: string}}
+        keys: {type: object, additionalProperties: {type: string}}

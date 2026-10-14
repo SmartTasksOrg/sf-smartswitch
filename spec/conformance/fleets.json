@@ -1,0 +1,1297 @@
+{
+ "description": "validate the fleet; when ok, its sha256 (of the canonical form) and its quorum threshold",
+ "default_thresholds": [
+  {
+   "n": 3,
+   "k": 2
+  },
+  {
+   "n": 4,
+   "k": 2
+  },
+  {
+   "n": 5,
+   "k": 2
+  },
+  {
+   "n": 6,
+   "k": 4
+  },
+  {
+   "n": 7,
+   "k": 4
+  },
+  {
+   "n": 8,
+   "k": 5
+  },
+  {
+   "n": 9,
+   "k": 5
+  },
+  {
+   "n": 10,
+   "k": 6
+  },
+  {
+   "n": 11,
+   "k": 6
+  },
+  {
+   "n": 12,
+   "k": 7
+  }
+ ],
+ "cases": [
+  {
+   "name": "three keyholders, roster",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": true,
+   "fleet_hash": "d35443ec04593334da832f7e8d2b0a51350aa7c5a407ddcfe212dc4aa14c9874",
+   "threshold": 2
+  },
+  {
+   "name": "three keyholders, no roster",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": null
+   },
+   "ok": true,
+   "fleet_hash": "9b06cff759710d877f5227261a595793b7cadb451fcd6cdb5abd6ce16c4f0103",
+   "threshold": 2
+  },
+  {
+   "name": "4 keyholders, default threshold",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     },
+     {
+      "id": "dave",
+      "public_key": "f644fb9d0ecf857063b4a10467289fe182a057420d2b01e5c785d39647e910ba"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": true,
+   "fleet_hash": "16faa1040b52a47aef4a7faab83754c5ba06b2e570ea7ce97a74635e16c294de",
+   "threshold": 2
+  },
+  {
+   "name": "5 keyholders, default threshold",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     },
+     {
+      "id": "dave",
+      "public_key": "f644fb9d0ecf857063b4a10467289fe182a057420d2b01e5c785d39647e910ba"
+     },
+     {
+      "id": "erin",
+      "public_key": "9d1caf3e5c8a8cb59a3b753879346f4e666b630dc645e49e5d534410c80b4dd8"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": true,
+   "fleet_hash": "583abcf77d8d485f05ce05d541a405eca2a6442404361ddda8a01fac3316bf47",
+   "threshold": 2
+  },
+  {
+   "name": "6 keyholders, default threshold",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     },
+     {
+      "id": "dave",
+      "public_key": "f644fb9d0ecf857063b4a10467289fe182a057420d2b01e5c785d39647e910ba"
+     },
+     {
+      "id": "erin",
+      "public_key": "9d1caf3e5c8a8cb59a3b753879346f4e666b630dc645e49e5d534410c80b4dd8"
+     },
+     {
+      "id": "frank",
+      "public_key": "e50852dc7429a1118bae24e9f08770a421622a808d597f30a8689a4ea5459705"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": true,
+   "fleet_hash": "9ffa1da61e2caf0c7e2052c0ad9f8acdbf05371bbddd51f66280485efacc91c2",
+   "threshold": 4
+  },
+  {
+   "name": "7 keyholders, default threshold",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     },
+     {
+      "id": "dave",
+      "public_key": "f644fb9d0ecf857063b4a10467289fe182a057420d2b01e5c785d39647e910ba"
+     },
+     {
+      "id": "erin",
+      "public_key": "9d1caf3e5c8a8cb59a3b753879346f4e666b630dc645e49e5d534410c80b4dd8"
+     },
+     {
+      "id": "frank",
+      "public_key": "e50852dc7429a1118bae24e9f08770a421622a808d597f30a8689a4ea5459705"
+     },
+     {
+      "id": "grace",
+      "public_key": "13ae0abf3c84deeb799b475bab3a88f177a8dc372cfc78c393504ae23ad6b143"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": true,
+   "fleet_hash": "4a88bdf7c1b3bf79c59521afff70ea5f6ce8ec6872e0a0beffc345783ef06cbc",
+   "threshold": 4
+  },
+  {
+   "name": "explicit threshold 3 of 7",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     },
+     {
+      "id": "dave",
+      "public_key": "f644fb9d0ecf857063b4a10467289fe182a057420d2b01e5c785d39647e910ba"
+     },
+     {
+      "id": "erin",
+      "public_key": "9d1caf3e5c8a8cb59a3b753879346f4e666b630dc645e49e5d534410c80b4dd8"
+     },
+     {
+      "id": "frank",
+      "public_key": "e50852dc7429a1118bae24e9f08770a421622a808d597f30a8689a4ea5459705"
+     },
+     {
+      "id": "grace",
+      "public_key": "13ae0abf3c84deeb799b475bab3a88f177a8dc372cfc78c393504ae23ad6b143"
+     }
+    ],
+    "threshold": 3,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": true,
+   "fleet_hash": "e3720a6a71e01ae7ae3d5444b6b914af994f9859a5f3d0ab6906f445db67c2d4",
+   "threshold": 3
+  },
+  {
+   "name": "explicit threshold 6 of 7",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     },
+     {
+      "id": "dave",
+      "public_key": "f644fb9d0ecf857063b4a10467289fe182a057420d2b01e5c785d39647e910ba"
+     },
+     {
+      "id": "erin",
+      "public_key": "9d1caf3e5c8a8cb59a3b753879346f4e666b630dc645e49e5d534410c80b4dd8"
+     },
+     {
+      "id": "frank",
+      "public_key": "e50852dc7429a1118bae24e9f08770a421622a808d597f30a8689a4ea5459705"
+     },
+     {
+      "id": "grace",
+      "public_key": "13ae0abf3c84deeb799b475bab3a88f177a8dc372cfc78c393504ae23ad6b143"
+     }
+    ],
+    "threshold": 6,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": true,
+   "fleet_hash": "f18e239dc960ac671f72c48c69e14705c068eaf8d6bfe982d799e1deabe7ff29",
+   "threshold": 6
+  },
+  {
+   "name": "threshold 7 of 7 (one keyholder could block)",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     },
+     {
+      "id": "dave",
+      "public_key": "f644fb9d0ecf857063b4a10467289fe182a057420d2b01e5c785d39647e910ba"
+     },
+     {
+      "id": "erin",
+      "public_key": "9d1caf3e5c8a8cb59a3b753879346f4e666b630dc645e49e5d534410c80b4dd8"
+     },
+     {
+      "id": "frank",
+      "public_key": "e50852dc7429a1118bae24e9f08770a421622a808d597f30a8689a4ea5459705"
+     },
+     {
+      "id": "grace",
+      "public_key": "13ae0abf3c84deeb799b475bab3a88f177a8dc372cfc78c393504ae23ad6b143"
+     }
+    ],
+    "threshold": 7,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "threshold 1 (one keyholder could trigger)",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": 1,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "threshold 2.5",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": 2.5,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "threshold true",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": true,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "two keyholders",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "missing field",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "extra field",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ],
+    "extra": 1
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "version 2",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 2,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "version true",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": true,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "type wrong",
+   "fleet": {
+    "type": "smartswitch.fleets",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "fleet_id with a space",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet one",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "fleet_id 65 characters",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "duplicate keyholder id",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "alice",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "duplicate public key",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "upper-case public key",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5E98D1B6A536598032A0D828E99BAA1C526A0941F2E92EA38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "keyholder with an extra field",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162",
+      "extra": "x"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "coordinator key is a keyholder key",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "offline timeout 999 ms",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 999,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "offline timeout 1000 ms",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 1000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": true,
+   "fleet_hash": "29da3fb553c2c463842afcbe81a0309f6c9370461e00d563e7884f811e09ac52",
+   "threshold": 2
+  },
+  {
+   "name": "max ttl one day + 1 ms",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 86400001,
+    "agents": [
+     {
+      "id": "a1",
+      "max_instances": 1
+     },
+     {
+      "id": "a2",
+      "max_instances": 2
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "agents: duplicate id",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a",
+      "max_instances": 1
+     },
+     {
+      "id": "a",
+      "max_instances": 1
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "agents: max_instances 0",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": [
+     {
+      "id": "a",
+      "max_instances": 0
+     }
+    ]
+   },
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  },
+  {
+   "name": "agents: empty list",
+   "fleet": {
+    "type": "smartswitch.fleet",
+    "version": 1,
+    "fleet_id": "fleet-test",
+    "keyholders": [
+     {
+      "id": "alice",
+      "public_key": "5e98d1b6a536598032a0d828e99baa1c526a0941f2e92ea38319544795312162"
+     },
+     {
+      "id": "bob",
+      "public_key": "2496b6eed1ff00b251cf41596fe4ac1777170aa908852c957653fa3d2aec11e9"
+     },
+     {
+      "id": "carol",
+      "public_key": "9c689082e33ea4b1800a58ea8189d2fdc8f0c84054c30317ba4ded02ffece417"
+     }
+    ],
+    "threshold": null,
+    "coordinator_key": "df1c3bd4c94a9de729f8904abc405ace93958f206567d6580dda550d9f744c00",
+    "offline_timeout_ms": 30000,
+    "proposal_max_ttl_ms": 600000,
+    "agents": []
+   },
+   "ok": true,
+   "fleet_hash": "6174188323ad6594e42bdd097c5b51c3854d99e729ed432552f63084feb98dda",
+   "threshold": 2
+  },
+  {
+   "name": "not an object",
+   "fleet": [
+    "smartswitch.fleet"
+   ],
+   "ok": false,
+   "code": "SW-BAD-FLEET"
+  }
+ ]
+}

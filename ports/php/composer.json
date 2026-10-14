@@ -1,0 +1,12 @@
+{
+    "name": "smarttasksorg/sf-smartswitch",
+    "description": "SmartSwitch for PHP, agent side: verifies the switch log, certificates and heartbeats and decides whether an agent may run. Not published on Packagist; use it from a clone.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=8.1",
+        "ext-json": "*",
+        "ext-sodium": "*"
+    },
+    "autoload": { "files": ["src/SmartSwitch.php"] }
+}
